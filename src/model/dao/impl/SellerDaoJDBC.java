@@ -89,8 +89,14 @@ public class SellerDaoJDBC implements SellerDao {
         PreparedStatement st = null;
         try{
             st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+
             st.setInt(1, id);
-            st.executeUpdate();
+
+            int rowsAfeected = st.executeUpdate();
+            if(rowsAfeected == 0){
+                throw new DbException("ID not found, no rows affected.");
+            }
+
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
         }
